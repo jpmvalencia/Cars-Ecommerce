@@ -13,50 +13,17 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container d-flex justify-content-center">
             <a class="navbar-brand" href="#">
-                <img src="C:\Users\user\workspace\app\app\src\main\resources\static\img\dark-logo.png"
-                    alt="FastCars Logo" width="100">
+                <img src="/img/dark-logo.png" alt="FastCars Logo" width="100">
             </a>
         </div>
     </nav>
     <div class="container mt-5">
-        <div class="d-flex flex-wrap justify-content-between">
-            <div class="card text-center mb-4" style="width: 18rem;">
+        <div class="d-flex flex-wrap justify-content-start">
+            <div class="card text-center mb-4 mx-2" style="width: 18rem;" th:each="car : ${cars}">
                 <div class="card-body">
-                    <h5 class="card-title">F40</h5>
-                    <h6 class="card-subtitle">Ferrari</h6>
-                    <p>$1500000</p>
-                    <button type="button" class="btn btn-primary">Agregar al Carrito</button>
-                </div>
-            </div>
-            <div class="card text-center mb-4" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Diablo VT</h5>
-                    <h6 class="card-subtitle">Lamborghini</h6>
-                    <p>$300000</p>
-                    <button type="button" class="btn btn-primary">Agregar al Carrito</button>
-                </div>
-            </div>
-            <div class="card text-center mb-4" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">EB110 Super Sport</h5>
-                    <h6 class="card-subtitle">Bugatti</h6>
-                    <p>$1000000</p>
-                    <button type="button" class="btn btn-primary">Agregar al Carrito</button>
-                </div>
-            </div>
-            <div class="card text-center mb-4" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">F1</h5>
-                    <h6 class="card-subtitle">McLaren</h6>
-                    <p>$15000000</p>
-                    <button type="button" class="btn btn-primary">Agregar al Carrito</button>
-                </div>
-            </div>
-            <div class="card text-center mb-4" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">XJ220</h5>
-                    <h6 class="card-subtitle">Jaguar</h6>
-                    <p>$500000</p>
+                    <h5 class="card-title" th:text="${car.model}"></h5>
+                    <h6 class="card-subtitle" th:text="${car.manufacturer}"></h6>
+                    <p>$<span th:text="${car.price}"></span></p>
                     <button type="button" class="btn btn-primary">Agregar al Carrito</button>
                 </div>
             </div>
