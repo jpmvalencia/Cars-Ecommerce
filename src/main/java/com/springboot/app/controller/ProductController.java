@@ -61,5 +61,10 @@ public class ProductController {
     return "update-form";
 }
 
+    @GetMapping("/cars")
+    public String showCars(Model model) {
+        model.addAttribute("cars", productService.getAllProducts());
+        return "home-cars";
+    }
 
 }
