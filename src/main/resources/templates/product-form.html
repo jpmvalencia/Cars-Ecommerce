@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ingreso de Autos</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <style>
+    .container {
+      padding-top: 50px;
+      /* Espacio para la barra de navegación */
+    }
+
+    body {
+      background-image: url("/img/background.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100%;
+    }
+
+    .table {
+      background-color: white;
+    }
+
+    .mt-3 {
+      margin-top: 1rem !important;
+      /* Ajuste del margen superior */
+    }
+
+
+    .form-editing {
+      /* Estilos adicionales para el modo de edición */
+      background-color: #ef6c00;
+    }
+
+    /* Definir los colores */
+    :root {
+      --color1: #06070F;
+      /* Azul oscuro */
+      --color2: #201E36;
+      /* Morado oscuro */
+      --color3: #412D55;
+      /* Morado */
+    }
+
+    /* Estilo del div */
+    .card {
+      background: linear-gradient(to right, var(--color1), var(--color2), var(--color3));
+      padding: 20px;
+      /* Espaciado interno */
+      border-radius: 10px;
+      /* Bordes redondeados */
+    }
+  </style>
+
+</head>
+
+<body th:class="${editingMode} ? 'form-editing' : ''">
+
+  <div class="container">
+    <div class="row">
+      <!-- Columna para el formulario -->
+      <div class="col-md-6">
+        <div class="card text-light">
+          <div class="card-header">
+            <h4 class="text-center">Ingreso de Autos</h4>
+            <div class="d-flex justify-content-center align-items-center">
+              <img src="\img\logo-general.jpg" alt="Producto" / class="img-fluid">
+            </div>
+          </div>
+          <div class="card-body mt-3">
+            <!-- Agregar margen inferior -->
+            <form th:object="${product}" th:action="@{/app/products/save-product}" method="post">
+              <div class="form-group">
+                <label for="productManufacturer">Marca:</label>
+                <input type="text" class="form-control" id="productManufacturer" th:field="*{manufacturer}"
+                  name="productManufacturer" required />
+              </div>
+              <div class="form-group">
+                <label for="productModel">Modelo:</label>
+                <input type="text" class="form-control" id="productModel" th:field="*{model}" name="productModel"
+                  required />
+              </div>
+              <div class="form-group">
+                <label for="productYear">Año:</label>
+                <input type="number" class="form-control" id="productYear" th:field="*{year}" name="productYear"
+                  required />
+              </div>
+              <div class="form-group">
+                <label for="productPrice">Precio:</label>
+                <input type="number" step="0.01" min="0" class="form-control" id="productPrice" th:field="*{price}"
+                  name="productPrice" required />
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">
+                Añadir Auto
+              </button>
+
+              <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                <span th:text="${errorMessage}"></span>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+      <!-- Columna para la tabla y el campo de búsqueda -->
+      <div class="col-md-6">
+        <div class="row">
+
+          <!-- Tabla de productos -->
+          <div class="col-md-12 ">
+            <div class="card text-light">
+              <div class="card-body">
+                <table class="table table-bordered bg-dark text-light">
+                  <thead>
+                    <tr>
+                      <th>Marca</th>
+                      <th>Modelo</th>
+                      <th>Año</th>
+                      <th>Precio</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="product : ${products}">
+                      <td th:text="${product.manufacturer}"></td>
+                      <td th:text="${product.model}"></td>
+                      <td th:text="${product.year}"></td>
+                      <td th:text="${product.price}"></td>
+                      <td>
+                        <form th:action="@{/app/products/editar-producto/{id}(id=${product.id})}" method="get">
+                          <button type="submit" class="btn btn-info btn-sm btn-block">Editar</button>
+                        </form>
+                        <form th:action="@{/app/products/eliminar-producto/{id}(id=${product.id})}" method="get"
+                          th:id="'deleteForm-' + ${product.id}">
+                    
+                          <button type="button" class="btn btn-danger btn-sm btn-block"
+                            th:onclick="'confirmDelete(' + ${product.id} + ')'">
+                            Eliminar
+                          </button>
+                        </form>
+                    
+                        <script>
+                          function confirmDelete(productId) {
+                            if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
+                              document.getElementById('deleteForm-' + productId).submit();
+                            }
+                          }
+                        </script>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Actualización de Autos</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      .container {
+        padding-top: 50px; /* Espacio para la barra de navegación */
+      }
+      body {
+        background-image: url("/img/background2.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      .table {
+        background-color: white;
+      }
+      .mt-3 {
+        margin-top: 1rem !important; /* Ajuste del margen superior */
+      }
+      
+    
+    .form-editing {
+      /* Estilos adicionales para el modo de edición */
+      background-color: #ef6c00;
+  }
+  /* Definir los colores */
+  :root {
+      --color1: #06070F;
+      /* Azul oscuro */
+      --color2: #201E36;
+      /* Morado oscuro */
+      --color3: #412D55;
+      /* Morado */
+    }
+
+    /* Estilo del div */
+    .card {
+      background: linear-gradient(to right, var(--color1), var(--color2), var(--color3));
+      padding: 20px;
+      /* Espaciado interno */
+      border-radius: 10px;
+      /* Bordes redondeados */
+    }
+    </style>
+    
+  </head>
+  <body th:class="${editingMode} ? 'form-editing' : ''"> 
+
+    <div class="container">
+          <div class="card text-light" style="width: 540px; margin: 0 auto;">
+            <div class="card-header">
+              <h4 class="text-center">Actualización de Auto</h4>
+              <div class="d-flex justify-content-center align-items-center">
+                <img class="img-fluid" src="\img\logo-general.jpg" alt="Producto" />
+            </div>            
+            </div>
+            <div class="card-body mt-3">
+              <!-- Agregar margen inferior -->
+              <form
+                th:object="${product}"
+                th:action="@{/app/products/save-product}"
+                method="post"
+              
+              >
+              <div class="form-group">
+                <input
+                  type="hidden"
+                  class="form-control"
+                  id="productId"
+                  th:field="*{id}"
+                  name="productId"
+                  readonly="readonly"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="productManufacturer">Marca:</label>
+                <input type="text" class="form-control" id="productManufacturer" th:field="*{manufacturer}"
+                  name="productManufacturer" required />
+              </div>
+              <div class="form-group">
+                <label for="productModel">Modelo:</label>
+                <input type="text" class="form-control" id="productModel" th:field="*{model}" name="productModel"
+                  required />
+              </div>
+              <div class="form-group">
+                <label for="productYear">Año:</label>
+                <input type="number" class="form-control" id="productYear" th:field="*{year}" name="productYear"
+                  required />
+              </div>
+              <div class="form-group">
+                <label for="productPrice">Precio:</label>
+                <input type="number" step="0.01" min="0" class="form-control" id="productPrice" th:field="*{price}"
+                  name="productPrice" required />
+              </div>
+                <button type="submit" class="btn btn-block" style="background: #FABB10;">
+                  Actualizar Auto
+                </button>
+
+                <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                    <span th:text="${errorMessage}"></span>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+    </div>
+  </body>
+</html>
