@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{base::layout(~{::section})}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Orders</title>
+  </head>
+  <body>
+    <section>
+        <h1>Órdenes</h1>
+        
+        <div class="container">
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Número de orden</th>
+                <th>Fecha</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${order.date}"></td>
+                    <td th:text="${order.total}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </section>
+  </body>
+</html>

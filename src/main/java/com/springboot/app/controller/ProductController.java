@@ -32,11 +32,10 @@ public class ProductController {
 
     @PostMapping("/app/products/save-product")
     public String guardarProducto(@ModelAttribute Product product, Model model) {
-            // Si el ID ya existe, agregar un mensaje de error y volver al formulario
-            productService.saveProduct(product);
-            List<Product> products = productService.getAllProducts();
-            model.addAttribute("products", products);
-            return "redirect:/app/products";
+        productService.saveProduct(product);
+        List<Product> products = productService.getAllProducts();
+        model.addAttribute("products", products);
+        return "redirect:/app/products";
     }
 
     @GetMapping("/app/products/eliminar-producto/{id}")
