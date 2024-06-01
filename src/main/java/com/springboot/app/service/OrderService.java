@@ -30,4 +30,9 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
+    /** This method is used to get an order by id */
+    public Order findOrderById(Long id) {
+        return orderRepository.findById(id).get();
+    }
+
 }
