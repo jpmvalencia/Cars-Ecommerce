@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    <!-- cars -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container d-flex justify-content-center">
             <a class="navbar-brand" href="#">
@@ -22,6 +23,7 @@
         <div class="d-flex flex-wrap justify-content-start">
             <div class="card text-center mb-4 mx-2" style="width: 18rem;" th:each="car : ${cars}">
                 <div class="card-body">
+                    <img src="/img/f4001.png" alt="FastCars Logo" width="230">
                     <h5 class="card-title" th:text="${car.model}"></h5>
                     <h6 class="card-subtitle" th:text="${car.manufacturer}"></h6>
                     <p>$<span th:text="${car.price}"></span></p>
@@ -29,11 +31,17 @@
                 </div>
             </div>
         </div>
+        <!-- cars -->
+
+        <!-- cart -->
         <div class="rounded-circle bg-dark fixed-bottom d-flex justify-content-center align-items-center"
             style="width: 60px; height: 60px; cursor: pointer; bottom: 40px; left: 40px;" data-bs-toggle="modal"
             data-bs-target="#cartShopping">
             <i class="fa-solid fa-cart-shopping text-light"></i>
         </div>
+        <!-- cart -->
+
+        <!-- Modal -->
         <div class="modal fade" id="cartShopping" tabindex="-1" aria-labelledby="cartShopping" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
@@ -51,52 +59,56 @@
                 </div>
             </div>
         </div>
+        <!-- Modal -->
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-        <script>
-            // JavaScript para manejar el carrito
-            let cart = [];
-    
-            function addToCart(button) {
-                const card = button.closest('.card-body');
-                const id = button.getAttribute('data-id');
-                const model = card.querySelector('.card-title').innerText;
-                const manufacturer = card.querySelector('.card-subtitle').innerText;
-                const price = card.querySelector('span').innerText;
-    
-                // Buscar el coche en el carrito
-                const carInCart = cart.find(car => car.id === id);
-    
-                if (carInCart) {
-                    // Incrementar la cantidad si el coche ya está en el carrito
-                    carInCart.quantity++;
-                } else {
-                    // Añadir el coche al carrito si no está en el carrito
-                    cart.push({ id, model, manufacturer, price, quantity: 1 });
-                }
-    
+        crossorigin="anonymous">
+    </script>
+    <script>
+        let cart = [];
 
-            }
+        function addToCart(button) {
+            const card = button.closest('.card-body');
+            const id = button.getAttribute('data-id');
+            const model = card.querySelector('.card-title').innerText;
+            const manufacturer = card.querySelector('.card-subtitle').innerText;
+            const price = card.querySelector('span').innerText;
     
-            function updateCartModal() {
-                const cartItemsContainer = document.getElementById('cartItems');
-                cartItemsContainer.innerHTML = '';
+            // Buscar el coche en el carrito
+            const carInCart = cart.find(car => car.id === id);
     
-                cart.forEach(car => {
-                    const carElement = document.createElement('div');
-                    carElement.classList.add('car-item', 'mb-2', 'p-2', 'border');
-                    carElement.innerHTML = `
-                        <h5>${car.model}</h5>
-                        <p>Fabricante: ${car.manufacturer}</p>
-                        <p>Precio: $${car.price}</p>
-                        <p>Cantidad: ${car.quantity}</p>
-                    `;
-                    cartItemsContainer.appendChild(carElement);
-                });
+            if (carInCart) {
+                // Incrementar la cantidad si el coche ya está en el carrito
+                carInCart.quantity++;
+            } else {
+                // Añadir el coche al carrito si no está en el carrito
+                cart.push({ id, model, manufacturer, price, quantity: 1 });
             }
-        </script>
+            
+            console.log(cart);
+    
+            // Actualizar el modal del carrito
+            updateCartModal();
+        }
+    
+        function updateCartModal() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            cartItemsContainer.innerHTML = '';
+    
+            cart.forEach(car => {
+                const carElement = document.createElement('div');
+                carElement.classList.add('car-item', 'mb-2', 'p-2', 'border');
+                carElement.innerHTML = `
+                    <h5>${car.model}</h5>
+                    <p>Fabricante: ${car.manufacturer}</p>
+                    <p>Precio: $${car.price}</p>
+                    <p>Cantidad: ${car.quantity}</p>
+                `;
+                cartItemsContainer.appendChild(carElement);
+            });
+        }
+    </script>
 </body>
 
 </html>

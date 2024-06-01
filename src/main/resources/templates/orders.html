@@ -6,30 +6,54 @@
 >
   <head>
     <meta charset="UTF-8" />
-    <title>Orders</title>
+    <title>Pedidos</title>
   </head>
   <body>
     <section>
-        <h1>Órdenes</h1>
-        
-        <div class="container">
+      <div class="container">
+        <h1>Pedidos</h1>
         <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>Número de orden</th>
-                <th>Fecha</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-                <tr th:each="order : ${orders}">
-                    <td th:text="${order.id}"></td>
-                    <td th:text="${order.date}"></td>
-                    <td th:text="${order.total}"></td>
-                </tr>
-            </tbody>
+          <thead>
+            <tr>
+              <th>Número de pedido</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th>Total</th>
+              <th>Detalle pedido</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="order : ${orders}">
+              <td th:text="${order.id}"></td>
+              <td th:text="${#dates.format(order.date, 'yyyy-MM-dd')}"></td>
+              <td th:text="${order.status}"></td>
+              <td th:text="${order.total}"></td>
+              <td>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Marca</th>
+                      <th>Modelo</th>
+                      <th>Año</th>
+                      <th>Cantidad</th>
+                      <th>Precio unitario</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="detail : ${order.orderDetails}">
+                      <td th:text="${detail.car.manufacturer}"></td>
+                      <td th:text="${detail.car.model}"></td>
+                      <td th:text="${detail.car.year}"></td>
+                      <td th:text="${detail.quantity}"></td>
+                      <td th:text="${detail.car.price}"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
         </table>
-    </div>
+      </div>
     </section>
   </body>
 </html>

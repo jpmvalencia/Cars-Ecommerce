@@ -1,5 +1,6 @@
 package com.springboot.app.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.springboot.app.model.Order;
+import com.springboot.app.model.OrderDetail;
+import com.springboot.app.model.OrderStatus;
 import com.springboot.app.model.User;
 import com.springboot.app.repository.UserRepository;
 import com.springboot.app.service.OrderService;
@@ -22,6 +26,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    // Inject the UserRepository
     @Autowired
     private UserRepository userRepository;
 
@@ -52,6 +57,13 @@ public class OrderController {
 
         // Get all the orders by user
         List<Order> orders = orderService.getOrdersByUser(user);
+        
+        // update the total in each order
+        for (Order orderItem : orders) {
+            orderItem.updateTotal();
+            orderItem.setStatus(OrderStatus.PENDIENTE);
+        }
+
         model.addAttribute("orders", orders);
 
         // Add the order to the model to be shown in the form
@@ -61,4 +73,39 @@ public class OrderController {
         return "orders";
     }
 
+    /** Post method to save the order */
+    @PostMapping("/app/user/orders/save-order")
+    public String saveOrder(@ModelAttribute Order order, Model model){
+        // get the logged user
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User user = userRepository.findByEmail(username).get();
+
+        // Set the user to the order
+        order.setUser(user);
+
+        // Create the order detail
+
+        if (order.getOrderDetails() != null) {
+            for (OrderDetail orderDetail : order.getOrderDetails()) {
+                orderDetail.setOrder(order);
+            }
+        } else {
+            order.setOrderDetails(new ArrayList<>());
+        }
+
+        // Set the default status if not provided
+       if (order.getStatus() == null) {
+           order.setStatus(OrderStatus.PENDIENTE);
+       }
+
+        // Update the total
+        order.updateTotal();
+
+        // Save the order
+        orderService.saveOrder(order);
+
+        // Return the view
+        return "redirect:/app/user/orders";
+    }
 }
