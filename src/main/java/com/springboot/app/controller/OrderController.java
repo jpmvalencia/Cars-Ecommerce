@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.springboot.app.model.Order;
 import com.springboot.app.model.OrderDetail;
@@ -106,6 +107,14 @@ public class OrderController {
         orderService.saveOrder(order);
 
         // Return the view
-        return "redirect:/app/user/orders";
+        return "redirect:/app/user/orders/order?id=" + order.getId();
+    }
+
+    /** get the order by id */
+    @GetMapping("/app/user/orders/order")
+    public String getOrder(@RequestParam("id") Long id, Model model) {
+        Order order = orderService.findOrderById(id);
+        model.addAttribute("order", order);
+        return "checkout";
     }
 }
